@@ -3,7 +3,7 @@ services:
     image: mariadb:10.11
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: notSecureChangeMe
+      MYSQL_ROOT_PASSWORD: asselem123
 
   phpmyadmin:
     image: phpmyadmin
@@ -14,8 +14,18 @@ services:
       - PMA_ARBITRARY=1
 
   web:
-    image: nginx
-    ports: 
+    build:
+      context: ./
+      dockerfile: Dockerfile-Nginx
+    ports:
       - "80:80"
     volumes:
       - ./meufrontend:/usr/share/nginx/html
+
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: Dockerfile-Php8-Fpm
+    container_name: fzl-php8.3-fpm
+    volumes:
+      - ./:/var/www/html
